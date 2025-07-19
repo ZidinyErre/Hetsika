@@ -1,5 +1,9 @@
 import cv2 as cv 
 import argparse
+import pygame
+
+pygame.mixer.init()
+song = pygame.mixer.Sound("816560__josefpres__piano-loops-145-efect-4-octave-long-loop-120-bpm.wav")
 # The OpenCv base was provided by chatgpt
 cap  = cv.VideoCapture(0)
 # argpase act the same as argv agc in C
@@ -27,7 +31,13 @@ while True:
     cv.imshow("Webcam", frame)  
 
     if cv.countNonZero(fgMask) > 30000:
-        print("wazaaaa")
+        song.play()
+        # if(song.pause()):
+        #     song.unpause()
+    else:
+        song.stop()
+
+
     if cv.waitKey(30) == ord('q'):
         break
 cap.release()
