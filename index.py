@@ -23,7 +23,7 @@ else:
 
 # Webcam management and observation of frames to "infinite"
 if not cap.isOpened():
-    print("Impossible d'accéder à la webcam")
+    print("Unable to access the webcam")
     exit()
 while True:
     ret, frame = cap.read()
