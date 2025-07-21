@@ -2,6 +2,7 @@ import cv2 as cv
 import argparse
 import pygame
 
+# Sets basic audio parameters (frequency, size, channels, buffer)
 pygame.mixer.init()
 song = pygame.mixer.Sound("815667__jadis0x__looping-piano-melody.wav")
 
@@ -14,11 +15,13 @@ parser = argparse.ArgumentParser(description = 'This program enable you to make 
 parser.add_argument('--algo', type=str, help= 'Background subtraction method (KNN, MOG2)', default = 'MOG2')
 args = parser.parse_args()
 
+# choose witch algorithm we gonna use
 if args.algo == 'MOG2':
     backSub = cv.createBackgroundSubtractorMOG2()
 else:
     backSub = cv.createBackgroundSubtractorKNN()
 
+# Webcam management and observation of frames to "infinite"
 if not cap.isOpened():
     print("Impossible d'accéder à la webcam")
     exit()
@@ -26,28 +29,23 @@ while True:
     ret, frame = cap.read()
     if not ret:
         break
-
+# start of the implementation of Background Subtraction Methods
     fgMask = backSub.apply(frame)
 
     cv.imshow("FG Mask", fgMask)  
     cv.imshow("Webcam", frame)  
 
 
-# on va partir sur channel()
-
-
-    if cv.countNonZero(fgMask) > 30000:
+# This logic come from chatgpt, not entirely but especially on the else and unpause part
+    if cv.countNonZero(fgMask) > 40000:
         if not channel.get_busy():
             channel.play(song)
-    if cv.countNonZero(fgMask) < 30000:
-        channel.pause()
-        if not channel.get_busy():
+        else:
             channel.unpause()
+    else:
+        channel.pause()
 
-    # else:
-    #     song.stop()
-
-
+# This part look if the case q is not send every 30 sec to break the while loop 
     if cv.waitKey(30) == ord('q'):
         break
 cap.release()
