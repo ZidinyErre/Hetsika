@@ -3,7 +3,9 @@ import argparse
 import pygame
 
 pygame.mixer.init()
-song = pygame.mixer.Sound("816560__josefpres__piano-loops-145-efect-4-octave-long-loop-120-bpm.wav")
+song = pygame.mixer.Sound("815667__jadis0x__looping-piano-melody.wav")
+
+channel = pygame.mixer.Channel(0)
 # The OpenCv base was provided by chatgpt
 cap  = cv.VideoCapture(0)
 # argpase act the same as argv agc in C
@@ -30,12 +32,20 @@ while True:
     cv.imshow("FG Mask", fgMask)  
     cv.imshow("Webcam", frame)  
 
+
+# on va partir sur channel()
+
+
     if cv.countNonZero(fgMask) > 30000:
-        song.play()
-        # if(song.pause()):
-        #     song.unpause()
-    else:
-        song.stop()
+        if not channel.get_busy():
+            channel.play(song)
+    if cv.countNonZero(fgMask) < 30000:
+        channel.pause()
+        if not channel.get_busy():
+            channel.unpause()
+
+    # else:
+    #     song.stop()
 
 
     if cv.waitKey(30) == ord('q'):
