@@ -82,7 +82,7 @@ The interaction is direct, responsive, and expressive — no keyboard or control
 # Create a virtual environment
 python -m venv .venv
 
-# Activate it (on Windows PowerShell)
+# Activate it (on Windows PowerShell or with your VsCode Terminal)
 .\.venv\Scripts\Activate
 
 # Install required libraries
